@@ -26,6 +26,10 @@
     <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
     <script src="../../js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../../js/getPDF.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <div class="container p-1">
@@ -51,7 +55,7 @@
                 INNER JOIN Companies ON Users.company_id = Companies.id";
                 if($company_id > 0)
                 {
-                    $sql += " WHERE company_id = $company_id";
+                    $sql .= " WHERE company_id = $company_id";
                 }
             ?>
             <?php foreach($users = $conn->query($sql) as $row):?>
@@ -62,14 +66,11 @@
                     </div>
                     <div class="employee-body p-1">
                         <?php
-                            $answers = $conn->query("SELECT * FROM UserAnswers
-                            INNER JOIN Answers ON UserAnswers.answer_id = Answers.id 
-                            WHERE user_id = ".$row['user_id']);
+                            $answers = $conn->query("SELECT * FROM UsersResults WHERE user_id = ".$row['user_id']." LIMIT 1");
                             foreach($answers as $answer):?>
                             <div class='border-bottom'>
                                 <p class='mb-0'>
-                                    <b><?php echo $answer['answer_priority']; ?></b>
-                                    <?php echo $answer['anser_text']; ?>
+                                    <?php echo $answer['points']; ?>
                                 </p>
                             </div>
                         <?php endforeach; ?>

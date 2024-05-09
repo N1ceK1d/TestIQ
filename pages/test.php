@@ -23,11 +23,16 @@
             </div>
         </div>
         <form class="questions mx-auto p-1" method='POST' action='../php/calculatePoints.php'>
-            <input type="hidden" name="gender" value="<?= $_GET['gender'] ?>">
+            <input type="hidden" name="gender" value="<?= $_GET['gender']; ?>" />
             <?php foreach($questions as $question):?>
                 <div class="question bg-light border rounded p-1 w-75 my-1">
                     <p><b><?= $question['id'] ?>. </b><?= $question['question_text'] ?></p>
                     <div class="answers row">
+                            <?php
+                            $filename = $conn->query("SELECT * FROM QuestionImages WHERE question_id = ".$question['id']);
+                            if($filename->num_rows > 0):?>
+                                <img class='img-fluid' src="../images/<?= $filename->fetch_assoc()['image_name'];?>" />
+                            <?php endif; ?>
                         <?php foreach ($conn->query("SELECT * FROM Answers WHERE question_id = ".$question['id'].";") as $answer):?>
                             <div class="answer-item">
                                 <input type="radio" name="question[<?= $question['id'] ?>]" value="<?= $answer['is_correct'] ?>">
@@ -37,7 +42,7 @@
                     </div>
                 </div>
             <?php endforeach; ?>
-            <input class='btn btn-primary' type="submit" value="Закончить тест">
+            <input class='end_test_btn btn btn-primary' type="submit" value="Закончить тест">
             <!-- <button >Закончить тест</button> -->
         </form>
     </div>

@@ -7,8 +7,7 @@ $(document).ready(function(){
       counter--;
       if (counter < 0) {
         clearInterval(interval);
-        $('#timer').text('Время вышло!');
+        $('.end_test_btn').trigger('click');
       }
     }, 1000);
-    $('#startTimer').prop('disabled', true); // Отключить кнопку после запуска таймера
 });

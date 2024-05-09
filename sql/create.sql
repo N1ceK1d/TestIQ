@@ -38,3 +38,10 @@ CREATE TABLE UsersResults (
     points INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id)
 );
+
+CREATE TABLE QuestionImages (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    image_name VARCHAR(255) NOT NULL,
+    question_id INT NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES Questions (id)
+);
