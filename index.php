@@ -17,6 +17,7 @@
     <title>Тест "НОВИС"</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <script src="bootstrap/js/bootstrap.min.js"></script>
+    <link rel="icon" href="favicon.ico">
 </head>
 <body>
     <div class="container">
