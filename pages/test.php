@@ -22,14 +22,24 @@
               </div>
             </div>
         </div>
-        <div class="questions mx-auto p-1">
+        <form class="questions mx-auto p-1" method='POST' action='../php/calculatePoints.php'>
+            <input type="hidden" name="gender" value="<?= $_GET['gender'] ?>">
             <?php foreach($questions as $question):?>
                 <div class="question bg-light border rounded p-1 w-75 my-1">
                     <p><b><?= $question['id'] ?>. </b><?= $question['question_text'] ?></p>
+                    <div class="answers row">
+                        <?php foreach ($conn->query("SELECT * FROM Answers WHERE question_id = ".$question['id'].";") as $answer):?>
+                            <div class="answer-item">
+                                <input type="radio" name="question[<?= $question['id'] ?>]" value="<?= $answer['is_correct'] ?>">
+                                <label><b><?= $answer['answer_char'] ?>.</b> <?= $answer['answer_text'] ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             <?php endforeach; ?>
-            <button class='btn btn-primary'>Закончить тест</button>
-        </div>
+            <input class='btn btn-primary' type="submit" value="Закончить тест">
+            <!-- <button >Закончить тест</button> -->
+        </form>
     </div>
     <script src="../js/timer.js"></script>
 </body>
