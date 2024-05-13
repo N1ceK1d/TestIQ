@@ -1,35 +1,39 @@
 function generatePDF2(filename = 'Компания', format = 'PNG', quality = 0.7) {
     const pdf = new jsPDF('p', 'pt', 'a4');
-    
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const margin = 10; // Отступ между блоками
+    let yPos = margin; // Начальное положение по оси Y
+
     // Собираем все элементы с классом "employee-item"
     const elements = document.querySelectorAll('.employee-item');
 
     // Проходимся по каждому элементу и добавляем его содержимое в PDF
     elements.forEach((element, index) => {
-        // Конвертируем HTML в Canvas
-        html2canvas(element)
-            .then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
+        html2canvas(element, { scale: quality }).then(canvas => {
+            const imgData = canvas.toDataURL('image/' + format.toLowerCase(), quality);
+            const width = element.offsetWidth / 2;
+            const height = element.offsetHeight / 2;
 
-                // Получаем размеры элемента
-                const width = element.offsetWidth / 2;
-                const height = element.offsetHeight / 2;
+            // Проверяем, помещается ли блок на странице
+            if (yPos + height + margin > pageHeight) {
+                pdf.addPage(); // Добавляем новую страницу
+                yPos = margin; // Сбрасываем Y-позицию
+            }
 
-                var xPos = (pdf.internal.pageSize.getWidth() - width) / 2;
-                var yPos = (pdf.internal.pageSize.getHeight() - height) / 2;
+            var xPos = (pageWidth - width) / 2; // Выравнивание по центру
 
-                // Добавляем изображение в PDF
-                pdf.addImage(imgData, 'PNG', xPos, 10, width, height);
+            // Добавляем изображение в PDF
+            pdf.addImage(imgData, format, xPos, yPos, width, height);
+            yPos += height + margin; // Увеличиваем Y-позицию для следующего блока
 
-                // Если это не последний элемент, добавляем новую страницу
-                if (index < elements.length - 1) {
-                    pdf.addPage();
-                } else {
-                    // Если это последний элемент, сохраняем PDF
-                    pdf.save(filename + '.pdf');
-                }
-            });
+            // Если это последний элемент, сохраняем PDF
+            if (index === elements.length - 1) {
+                pdf.save(filename + '.pdf');
+            }
+        });
     });
 }
+
 
 

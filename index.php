@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест "НОВИС"</title>
+    <title>Тест IQ</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <link rel="icon" href="favicon.ico">
@@ -23,7 +23,7 @@
     <div class="container">
     <?php if(isset($_GET['company_id'])): ?>
         <div class="test-intro bg-light p-1 rounded border my-1 mx-auto w-75">
-            <h1>Тест умственных способностей "НОВИС"</h1>
+            <h1>Тест на IQ</h1>
             <p>
                 Это - тест для определения Вашей способности решать задачи <br>
                 В тесте - <b>80 вопросов</b> <br><br>

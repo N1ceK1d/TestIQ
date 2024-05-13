@@ -572,7 +572,9 @@ VALUES
 ('39.jpg', 39),
 ('54.jpg', 54),
 ('66.jpg', 66),
-('78.jpg', 78);
+('78.jpg', 78),
+('78.jpg', 79),
+('78.jpg', 80);
 
 
 INSERT INTO Admins (login, password)
