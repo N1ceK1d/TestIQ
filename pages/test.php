@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест "НОВИС"</title>
+    <title>Тест IQ</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/jquery-3.7.1.min.js"></script>
@@ -31,7 +31,7 @@
                             <?php
                             $filename = $conn->query("SELECT * FROM QuestionImages WHERE question_id = ".$question['id']);
                             if($filename->num_rows > 0):?>
-                                <img class='img-fluid' src="../images/<?= $filename->fetch_assoc()['image_name'];?>" />
+                                <img class='img-fluid w-75' src="../images/<?= $filename->fetch_assoc()['image_name'];?>" />
                             <?php endif; ?>
                         <?php foreach ($conn->query("SELECT * FROM Answers WHERE question_id = ".$question['id'].";") as $answer):?>
                             <div class="answer-item">
