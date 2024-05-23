@@ -22,14 +22,19 @@ CREATE TABLE Companies (
     name VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE Genders (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE Users (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(255),
     second_name VARCHAR(255),
-    last_name VARCHAR(255),
-    post_position VARCHAR(255),
     company_id INT NOT NULL,
-    FOREIGN KEY (company_id) REFERENCES Companies (id)
+    gender_id INT NOT NULL,
+    FOREIGN KEY (company_id) REFERENCES Companies (id),
+    FOREIGN KEY (gender_id) REFERENCES Genders (id)
 );
 
 CREATE TABLE UsersResults (

@@ -56,21 +56,14 @@
                       <input type="text" name='second_name' class="form-control" id="exampleInputPassword1">
                     </div>
                     <div class="mb-3">
-                      <label for="exampleInputName" class="form-label">Отчество</label>
-                      <input type="text" name='last_name' class="form-control" id="exampleInputName" aria-describedby="nameHelp">
-                    </div>
-                    <div class="mb-3">
                       <input type="hidden" name="company_id" class="company_id" value="<?php echo $company_id ?>">
                     </div>
                     <div class="mb-3">
-                      <label for="exampleInputName" class="form-label">Должность</label>
-                      <input type="text" name='post_position' class="form-control" id="exampleInputName" aria-describedby="nameHelp">
-                    </div>
-                    <div class="mb-3">
                       <label for="exampleInputName" class="form-label">Пол</label>
-                      <select name="gender" class="form-select">
-                        <option value="male">Мужской</option>
-                        <option value="female">Женский</option>
+                      <select name="gender_id" class="form-select">
+                        <?php foreach ($conn->query("SELECT * FROM Genders") as $gender) :?>
+                          <option value="<?php echo $gender['id'] ?>"><?php echo $gender['name'] ?></option>
+                        <?php endforeach; ?>
                       </select>
                     </div>
                     <div class="btn-submit text-center">
@@ -96,5 +89,6 @@
         </div>
     <?php endif; ?>
     </div>
+    <script>localStorage.clear()</script>
 </body>
 </html>

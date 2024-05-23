@@ -18,7 +18,7 @@
             <div class="card bg-primary text-white">
               <div class="card-body">
                 <h5 class="card-title">Таймер обратного отсчета</h5>
-                <p class="card-text" id="timer">30:00</p>
+                <p class="card-text" id="timer"></p>
               </div>
             </div>
         </div>

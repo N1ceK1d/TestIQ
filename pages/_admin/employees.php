@@ -50,7 +50,7 @@
         <div class="diagramms">
             <?php 
                 $sql = "SELECT *, Users.id as user_id,
-                CONCAT(Users.second_name, ' ', Users.first_name, ' ', Users.last_name) as fullname
+                CONCAT(Users.second_name, ' ', Users.first_name) as fullname
                 FROM Users
                 INNER JOIN Companies ON Users.company_id = Companies.id";
                 if($company_id > 0)

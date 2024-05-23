@@ -573,3 +573,8 @@ VALUES
 
 INSERT INTO Admins (login, password)
 VALUES ('admin', '$2y$10$uYv65GFFJ5peU8A7kODs...IJVqHnmBDBMfvcU1nWLRRNFqaB10hK');
+
+INSERT INTO Genders (id, name)
+VALUES
+(1, 'Мужчина'),
+(2, 'Женщина');
