@@ -1,6 +1,8 @@
 <?php
     require("../php/conn.php");
+    session_start();
     $questions = $conn->query("SELECT * FROM Questions;");
+    $has_answers = $conn->query("SELECT * FROM UsersResults WHERE user_id = " . $_SESSION['user_id']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +15,7 @@
     <script src="../js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+    <?= $has_answers->num_rows > 0 ? '<script>window.location.href = "endTest.php";</script>' : '' ?>
     <div class="container">
         <div class="timer position-sticky top-0 p-1 z-index-100">
             <div class="card bg-primary text-white">

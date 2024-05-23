@@ -35,5 +35,34 @@ function generatePDF2(filename = 'Компания', format = 'PNG', quality = 0
     });
 }
 
+function generateSolidPDF(filename = 'Компания', format = 'PNG', diagramm_id, quality = 1) {
+    const pdf = new jsPDF('p', 'pt', 'a4');
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    
+
+    // Собираем все элементы с классом "employee-item"
+    const elements = document.querySelectorAll('#'+diagramm_id);
+
+    // Проходимся по каждому элементу и добавляем его содержимое в PDF
+    elements.forEach((element, index) => {
+        html2canvas(element, { scale: quality }).then(canvas => {
+            const imgData = canvas.toDataURL('image/' + format.toLowerCase(), quality);
+            const width = element.offsetWidth / 1.5;
+            const height = element.offsetHeight / 1.5;
+
+            var xPos = (pageWidth - width) / 2; // Выравнивание по центру
+
+            // Добавляем изображение в PDF
+            pdf.addImage(imgData, format, xPos, 10, width, height);
+
+            // Если это последний элемент, сохраняем PDF
+            if (index === elements.length - 1) {
+                pdf.save(filename + '.pdf');
+            }
+        });
+    });
+}
+
 
 

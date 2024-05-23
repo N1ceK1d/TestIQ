@@ -59,7 +59,7 @@
                 }
             ?>
             <?php foreach($users = $conn->query($sql) as $row):?>
-                <div class="employee-item border my-1 w-75">
+                <div class="employee-item border my-1 w-75" id='user_<?php echo $row['user_id']; ?>'>
                     <div class="employee_header bg-primary text-white p-1">
                         <p class="name h3 mb-0"><?php echo $row['fullname']; ?></p>
                         <p class="lead"><?php echo $row['name']; ?></p>
@@ -68,12 +68,25 @@
                         <?php
                             $answers = $conn->query("SELECT * FROM UsersResults WHERE user_id = ".$row['user_id']." LIMIT 1");
                             foreach($answers as $answer):?>
-                            <div class='border-bottom'>
-                                <p class='mb-0'>
-                                    <?php echo $answer['points']; ?>
-                                </p>
-                            </div>
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <td><b>КИ</b></td>
+                                        <td><b>Описательная классификация</b></td>
+                                        <td><b>% населения</b></td>
+                                        <td><b>Описание</b></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <?php getUserResult2($answer['points']); ?>
+                                    </tr>
+                                </tbody>
+                            </table>
                         <?php endforeach; ?>
+                    </div>
+                    <div class="employee-footer p-1 bg-light">
+                        <button class='btn btn-primary get_pdf'>Скачать</button>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -94,6 +107,77 @@
         $('.pdf_export').on('click', () => {
             generatePDF2('<?php echo $name; ?>', 'PDF');
         })
+        
+        $('.get_pdf').on('click', (event) => {
+            $('.get_pdf').hide();
+            generateSolidPDF('<?php echo $name; ?>', 'PDF', $(event.target).parent().parent().attr('id'));
+            $('.get_pdf').show();
+        })
     </script>
 </body>
 </html>
+<?php 
+function getUserResult($points)
+{
+    switch ($points) {
+        case $points >= 135 && $points <= 200:
+            echo "Очень высокий";
+            break;
+        case $points >= 110 && $points <= 134:
+            echo "Высокий";
+            break;
+        case $points >= 100 && $points <= 109:
+            echo "Выше среднего";
+            break;
+        case $points >= 90 && $points <= 99:
+            echo "Ниже среднего";
+            break;
+        case $points >= 80 && $points <= 89:
+            echo "Низкий";
+            break;
+        case $points >= 0 && $points < 80:
+            echo "Очень низкий";
+            break;
+    }
+}
+
+function getUserResult2($points)
+{
+    echo "<td>$points</td>";
+    switch ($points) {
+        case $points >= 135 && $points <= 200:
+            echo "<td>Очень высокий</td>";
+            echo "<td>5%</td>";
+            echo "<td>Старший руководитель</td>";
+            break;
+        case $points >= 110 && $points <= 134:
+            echo "<td>Высокий</td>";
+            echo "<td>10%</td>";
+            echo "<td>Старший или младший руководитель</td>";
+            break;
+        case $points >= 100 && $points <= 109:
+            echo "<td>Выше среднего</td>";
+            echo "<td>35%</td>";
+            echo "<td>Не руководящий пост</td>";
+            break;
+        case $points >= 90 && $points <= 99:
+            echo "<td>Ниже среднего</td>";
+            echo "<td>35%</td>";
+            echo "<td>Не руководящий пост, рекомендуется назначать в область
+            , которая хорошо известна и в которой есть опыт работы</td>";
+            break;
+        case $points >= 80 && $points <= 89:
+            echo "<td>Низкий</td>";
+            echo "<td>10%</td>";
+            echo "<td>Не руководящий пост, рекомендуется назначать в область, 
+            где доказано предварительное обучение или квалификация</td>";
+            break;
+        case $points >= 0 && $points < 80:
+            echo "<td>Очень низкий</td>";
+            echo "<td> 5%</td>";
+            echo "<td>Следует поручать только 
+            область, в которой доказаны компетентность и квалификация</td>";
+            break;
+    }
+}
+?>
