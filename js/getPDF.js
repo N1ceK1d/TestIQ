@@ -48,8 +48,8 @@ function generateSolidPDF(filename = 'Компания', format = 'PNG', diagram
     elements.forEach((element, index) => {
         html2canvas(element, { scale: quality }).then(canvas => {
             const imgData = canvas.toDataURL('image/' + format.toLowerCase(), quality);
-            const width = element.offsetWidth / 1.5;
-            const height = element.offsetHeight / 1.5;
+            const width = element.offsetWidth / 2;
+            const height = element.offsetHeight / 2;
 
             var xPos = (pageWidth - width) / 2; // Выравнивание по центру
 

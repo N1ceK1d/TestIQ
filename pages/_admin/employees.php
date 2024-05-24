@@ -87,6 +87,10 @@
                     </div>
                     <div class="employee-footer p-1 bg-light">
                         <button class='btn btn-primary get_pdf'>Скачать</button>
+                        <form action="../../php/deleteUser.php" method="post" class="my-1 delete_form">
+                            <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
+                            <input type="submit" class="btn btn-danger" value="Удалить">
+                        </form>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -103,15 +107,20 @@
     </div>
     
     <script>
-        console.log('<?php echo $company_name->num_rows ?>');
         $('.pdf_export').on('click', () => {
+            $('.get_pdf').hide();
+            $('.delete_form').hide();
             generatePDF2('<?php echo $name; ?>', 'PDF');
+            $('.get_pdf').show();
+            $('.delete_form').show();
         })
         
         $('.get_pdf').on('click', (event) => {
             $('.get_pdf').hide();
+            $('.delete_form').hide();
             generateSolidPDF('<?php echo $name; ?>', 'PDF', $(event.target).parent().parent().attr('id'));
             $('.get_pdf').show();
+            $('.delete_form').show();
         })
     </script>
 </body>
