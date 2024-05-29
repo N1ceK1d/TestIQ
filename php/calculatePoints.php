@@ -23,8 +23,8 @@ $result += ($gender == 'Мужчина' ? 75 : 70);
 
 if($conn->query("INSERT INTO UsersResults (user_id, points) VALUES ($user_id, $result)"))
 {
+    $add_time = "UPDATE Users SET test_time = NOW() WHERE id = $user_id";
+    $conn->query($add_time);
     header("Location: ../pages/endTest.php");
-} else {
-    echo $conn->error;
 }
 ?>

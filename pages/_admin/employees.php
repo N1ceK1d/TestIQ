@@ -52,10 +52,13 @@
                 $sql = "SELECT *, Users.id as user_id,
                 CONCAT(Users.second_name, ' ', Users.first_name) as fullname
                 FROM Users
-                INNER JOIN Companies ON Users.company_id = Companies.id";
+                INNER JOIN Companies ON Users.company_id = Companies.id ORDER BY test_time";
                 if($company_id > 0)
                 {
-                    $sql .= " WHERE company_id = $company_id";
+                    $sql = "SELECT *, Users.id as user_id,
+                    CONCAT(Users.second_name, ' ', Users.first_name) as fullname
+                    FROM Users
+                    INNER JOIN Companies ON Users.company_id = Companies.id WHERE company_id = $company_id ORDER BY test_time";
                 }
             ?>
             <?php foreach($users = $conn->query($sql) as $row):?>
@@ -63,6 +66,11 @@
                     <div class="employee_header bg-primary text-white p-1">
                         <p class="name h3 mb-0"><?php echo $row['fullname']; ?></p>
                         <p class="lead"><?php echo $row['name']; ?></p>
+                        <p class="lead"><?php echo mysqli_fetch_assoc($conn->query("SELECT Genders.name FROM Users INNER JOIN Genders ON Users.gender_id = Genders.id WHERE Users.id = ".$row['user_id'].""))['name']; ?></p>
+                        <p><?php
+                            $time = strtotime($row['test_time']);
+                            echo date("d/m/y H:i", $time);
+                        ?></p>
                     </div>
                     <div class="employee-body p-1">
                         <?php
@@ -89,7 +97,8 @@
                         <button class='btn btn-primary get_pdf'>Скачать</button>
                         <form action="../../php/deleteUser.php" method="post" class="my-1 delete_form">
                             <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
-                            <input type="submit" class="btn btn-danger" value="Удалить">
+                            <input type="button" class="btn btn-danger" value="Удалить"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="<?php echo $row['user_id'];?>">
                         </form>
                     </div>
                 </div>
@@ -121,6 +130,39 @@
             generateSolidPDF('<?php echo $name; ?>', 'PDF', $(event.target).parent().parent().attr('id'));
             $('.get_pdf').show();
             $('.delete_form').show();
+        })
+    </script>
+    <!--Modal Start-->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Удаление тестируемого</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="../../php/deleteUser.php">
+                        <input type="hidden" name="user_id" value="" class='user_id'>
+                        <div class="mb-3">
+                            <p>Вы уверены, что хотите удалить данные этого тестируемого?</p>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal End-->
+    <script>
+        var exampleModal = document.getElementById('exampleModal2')
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget
+            var recipient = button.getAttribute('data-bs-whatever');
+
+            var modalBodyInput = exampleModal.querySelector('.modal-body #recipient-name ')
+            console.log(recipient);
+            exampleModal.querySelector('.modal-body .user_id').value = recipient;
         })
     </script>
 </body>

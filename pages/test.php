@@ -36,10 +36,10 @@
                             if($filename->num_rows > 0):?>
                                 <img class='img-fluid w-75' src="../images/<?= $filename->fetch_assoc()['image_name'];?>" />
                             <?php endif; ?>
-                        <?php foreach ($conn->query("SELECT * FROM Answers WHERE question_id = ".$question['id'].";") as $answer):?>
+                        <?php foreach ($conn->query("SELECT * FROM Answers WHERE question_id = ".$question['id']." ORDER BY answer_char;") as $answer):?>
                             <div class="answer-item">
-                                <input type="radio" name="question[<?= $question['id'] ?>]" value="<?= $answer['is_correct'] ?>">
-                                <label><b><?= $answer['answer_char'] ?>.</b> <?= $answer['answer_text'] ?></label>
+                                <input class='answer_input' type="radio" name="question[<?= $question['id'] ?>]" value="<?= $answer['is_correct'] ?>">
+                                <label><b><?= $answer['answer_char'] ?>.</b> <?= $answer['answer_text'] ?> (<?= $answer['is_correct'] ?>)</label>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -50,5 +50,6 @@
         </form>
     </div>
     <script src="../js/timer.js"></script>
+    <script src="../js/auto_test.js"></script>
 </body>
 </html>

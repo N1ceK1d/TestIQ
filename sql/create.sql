@@ -33,6 +33,7 @@ CREATE TABLE Users (
     second_name VARCHAR(255),
     company_id INT NOT NULL,
     gender_id INT NOT NULL,
+    test_time DATETIME,
     FOREIGN KEY (company_id) REFERENCES Companies (id),
     FOREIGN KEY (gender_id) REFERENCES Genders (id)
 );
