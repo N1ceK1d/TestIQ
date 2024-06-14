@@ -10,6 +10,10 @@ if(isset($_GET['company_id']))
 {
   $company_id = base64_decode($_GET['company_id']);
 }
+if(isset($_GET['is_free']))
+{
+  $is_free = base64_decode($_GET['is_free']);
+}
 $test_count = mysqli_fetch_assoc($conn->query("SELECT * FROM Customers WHERE company_id = $company_id"));
 ?>
 <!DOCTYPE html>
@@ -25,7 +29,7 @@ $test_count = mysqli_fetch_assoc($conn->query("SELECT * FROM Customers WHERE com
 <body>
     <div class="container">
     <?php if(isset($_GET['company_id'])): ?>
-      <?php if(getTestCount2($company_id, $conn) > 0 && timeIsEnd($test_count['time_count'])): ?>
+      <?php if((getTestCount2($company_id, $conn) > 0 && timeIsEnd($test_count['time_count'])) || isset($_GET['is_free'])): ?>
         <div class="test-intro bg-light p-1 rounded border my-1 mx-auto w-75">
             <h1>Тест на IQ</h1>
             <p>
