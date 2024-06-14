@@ -123,6 +123,7 @@
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="../../php/deleteUser.php">
+                        <input type="hidden" name="customer" value="1">
                         <input type="hidden" name="user_id" value="" class='user_id'>
                         <div class="mb-3">
                             <p>Вы уверены, что хотите удалить данные этого тестируемого?</p>

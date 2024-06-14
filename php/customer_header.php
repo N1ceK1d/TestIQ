@@ -12,7 +12,14 @@
         <h2><?php echo $res['login']; ?></h2>
         <h3><?php echo $res['company_name']; ?></h3>
         
-        <p><b>Количество вопросов:</b> <?php echo getTestCount($res['company_id'], $conn, $_SESSION['customer_id']) ?> / <?php echo $res['answers_count']; ?></p>
+        <p><b>Количество вопросов:</b> <?php 
+        if(mysqli_fetch_assoc($conn->query("SELECT * FROM Customers WHERE company_id = ".$res['company_id']))['answers_count'] != null )
+        {
+            echo getTestCount($res['company_id'], $conn, $_SESSION['customer_id']) ?> / <?php echo $res['answers_count'];
+        } else {
+            echo '-';
+        }
+         ?></p>
         <p><b>Оставшееся время:</b> <label class='zero_time'><?php
         // Установка временной зоны для объекта DateTime
         // Создание объекта DateTime для текущего времени
@@ -53,11 +60,13 @@
 </header>
 <script>
 $(document).ready(function() {
+    console.log(<?php echo getTestCount($res['company_id'], $conn, $_SESSION['customer_id']); ?>);
     // Функция для проверки условий и переключения кнопки
     function checkConditionsAndToggleButton() {
         // Получение количества вопросов и оставшегося времени
         var questionsCount = <?php echo getTestCount($res['company_id'], $conn, $_SESSION['customer_id']); ?>;
         var remainingTime = $('.zero_time').text().trim();
+        console.log(<?php echo getTestCount($res['company_id'], $conn, $_SESSION['customer_id']); ?>);
 
         // Проверка, равно ли количество вопросов нулю
         var isQuestionsCountZero = questionsCount == 0;

@@ -6,6 +6,8 @@
     $sql = "INSERT INTO Customers (login, password, company_id) 
     VALUES ('$login', '$password', $company_id)";
 
+    $hasAccess = "SELECT * FROM Customers WHERE company_id = $company_id";
+
     $accessCount = $conn->query($hasAccess);
     if($accessCount->num_rows == 0)
     {
