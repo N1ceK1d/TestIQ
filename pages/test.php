@@ -39,7 +39,7 @@
                         <?php foreach ($conn->query("SELECT * FROM Answers WHERE question_id = ".$question['id']." ORDER BY answer_char;") as $answer):?>
                             <div class="answer-item">
                                 <input class='answer_input' type="radio" name="question[<?= $question['id'] ?>]" value="<?= $answer['is_correct'] ?>">
-                                <label><b><?= $answer['answer_char'] ?>.</b> <?= $answer['answer_text'] ?> (<?= $answer['is_correct'] ?>)</label>
+                                <label><b><?= $answer['answer_char'] ?>.</b> <?= $answer['answer_text'] ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>

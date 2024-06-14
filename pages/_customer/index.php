@@ -1,20 +1,18 @@
 <?php
     session_start();
-    if(!isset($_SESSION['admin_id']))
+    if(!isset($_SESSION['customer_id']))
     {
         header("Location: login.php");
     }
     require("../../php/conn.php");
-    $company_id = 0;
-    if(isset($_GET['company_id']))
-    {
-        $company_id = $_GET['company_id'];
-    }
-    $user_type = 0;
-    if(isset($_GET['user_type']))
-    {
-        $user_type = $_GET['user_type'];
-    }
+    $company_id = mysqli_fetch_assoc($conn->query("SELECT company_id FROM Customers WHERE id = ".$_SESSION['customer_id']))['company_id'];
+    $sql = "SELECT Users.*, Users.id as user_id, CONCAT(Users.second_name, ' ', Users.first_name) as fullname
+    FROM Users
+    INNER JOIN UsersResults ON UsersResults.user_id = Users.id 
+    INNER JOIN Companies ON Users.company_id = Companies.id
+    WHERE company_id = $company_id
+    GROUP By Users.id 
+    ORDER BY test_time;";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,37 +28,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="../../js/getPDF.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
 </head>
 <body>
     <div class="container p-1">
         <h1>Тест IQ</h1>
         <h1>Сотрудники</h1>
-        <?php require("../../php/admin_header.php"); ?>
+        <?php require("../../php/customer_header.php"); ?>
         <button class='pdf_export btn btn-primary'>Экспорт PDF</button>
-        <form class="search form border w-25 p-2 m-auto text-center" action="" method="GET">
-            <select name="company_id" class="form-select form-select-sm my-1 w-100" aria-label="Default select example">
-                <option value="0" selected>Все компании</option>
-                <?php
-                    $companies = $conn->query("SELECT * FROM Companies;");
-                    foreach ($companies as $row):?>
-                        <option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
-                <?php endforeach ?>
-            </select>
-            <input type="submit" value="Найти" class="btn btn-primary my-1">
-        </form>
         <div class="diagramms">
             <?php 
                 $sql = "SELECT *, Users.id as user_id,
                 CONCAT(Users.second_name, ' ', Users.first_name) as fullname
                 FROM Users
-                INNER JOIN Companies ON Users.company_id = Companies.id ORDER BY test_time";
-                if($company_id > 0)
-                {
-                    $sql = "SELECT *, Users.id as user_id,
-                    CONCAT(Users.second_name, ' ', Users.first_name) as fullname
-                    FROM Users
-                    INNER JOIN Companies ON Users.company_id = Companies.id WHERE company_id = $company_id ORDER BY test_time";
-                }
+                INNER JOIN Companies ON Users.company_id = Companies.id WHERE Users.company_id = $company_id ORDER BY test_time";
             ?>
             <?php foreach($users = $conn->query($sql) as $row):?>
                 <div class="employee-item border my-1 w-75" id='user_<?php echo $row['user_id']; ?>'>
@@ -115,7 +96,6 @@
             }
         ?>
     </div>
-    
     <script>
         $('.pdf_export').on('click', () => {
             $('.get_pdf').hide();
@@ -166,6 +146,7 @@
             exampleModal.querySelector('.modal-body .user_id').value = recipient;
         })
     </script>
+    
 </body>
 </html>
 <?php 

@@ -23,6 +23,7 @@
 </head>
 <body>
     <div class="container">
+        <h1>Тест IQ</h1>
         <?php require("../../php/admin_header.php") ?>
     </div>
 </body>

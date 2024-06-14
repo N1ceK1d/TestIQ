@@ -8,7 +8,7 @@ CREATE TABLE Answers (
     answer_text VARCHAR(255) NOT NULL,
     question_id INT NOT NULL,
     is_correct BOOLEAN NOT NULL,
-    answer_char VARCHAR(1) NOT NULL,
+    answer_char VARCHAR(1) NOT NULL
 );
 
 CREATE TABLE Admins (
@@ -20,6 +20,16 @@ CREATE TABLE Admins (
 CREATE TABLE Companies (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Customers (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    login VARCHAR(255) NOT NULL,
+    password LONGTEXT NOT NULL,
+    company_id INT NOT NULL,
+    answers_count INT,
+    time_count DATETIME,
+    FOREIGN KEY (company_id) REFERENCES Companies (id)
 );
 
 CREATE TABLE Genders (
